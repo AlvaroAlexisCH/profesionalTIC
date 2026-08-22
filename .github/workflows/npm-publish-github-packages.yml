@@ -1,36 +1,44 @@
-# This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
-# For more information see: https://docs.github.com/en/actions/publishing-packages/publishing-nodejs-packages
-
-name: Node.js Package
+name: CI - Calculadora HTML JavaScript - Herramientas TIC
 
 on:
-  release:
-    types: [created]
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  build:
+  build-test:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - run: npm ci
-      - run: npm test
 
-  publish-gpr:
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Descargar código
+        uses: actions/checkout@v7
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v7
         with:
-          node-version: 20
-          registry-url: https://npm.pkg.github.com/
-      - run: npm ci
-      - run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          node-version: "24"
+
+      - name: Instalar dependencias
+        run: npm install
+
+      - name: Validar HTML
+        run: npm run lint:html
+
+      - name: Validar JavaScript
+        run: npm run check:js
+
+      - name: Ejecutar pruebas
+        run: npm test
+
+      - name: Preparar artefacto
+        run: npm run build
+
+      - name: Publicar artefacto del build
+        uses: actions/upload-artifact@v7
+        with:
+          name: sitio-web
+          path: dist/
+
+      - name: Despliegue simulado
+        run: echo "Despliegue exitoso - artefacto listo en dist/"

@@ -2,7 +2,7 @@ name: CI/CD - Calculadora HTML JavaScript - AWS S3
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, pruebaAWS1 ]
   pull_request:
     branches: [ main ]
 

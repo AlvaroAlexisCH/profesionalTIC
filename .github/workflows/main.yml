@@ -41,7 +41,7 @@ jobs:
           path: dist/
 
       # =======================================================
-      # 🚀 DESPLIEGUE REAL EN AWS S3 (CD)
+      # DESPLIEGUE REAL EN AWS S3 (CD)
       # =======================================================
       - name: Configurar credenciales de AWS
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
@@ -54,4 +54,4 @@ jobs:
       - name: Desplegar sitio web en Amazon S3
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: |
-          aws s3 sync dist/ s3://NOMBRE-DE-TU-BUCKET --delete
+          aws s3 sync dist/ s3://alexis-prueba1 --delete

@@ -52,6 +52,6 @@ jobs:
           aws-region: us-east-1
 
       - name: Desplegar sitio web en Amazon S3
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        if: github.event_name == 'push'
         run: |
           aws s3 sync dist/ s3://alexis-prueba1 --delete
